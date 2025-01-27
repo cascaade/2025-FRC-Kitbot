@@ -7,7 +7,7 @@ package frc.robot;
 import edu.wpi.first.wpilibj2.command.Command;
 import edu.wpi.first.wpilibj2.command.Commands;
 import edu.wpi.first.wpilibj2.command.button.CommandXboxController;
-import frc.robot.Constants.DriverConstants;
+import frc.robot.Constants.OIConstants;
 import frc.robot.subsystems.DriveTrain;
 import frc.robot.subsystems.Shooter;
 
@@ -21,7 +21,7 @@ public class RobotContainer {
         shooter = new Shooter();
         drivetrain = new DriveTrain();
 
-        controller = new CommandXboxController(DriverConstants.XBOXPort);
+        controller = new CommandXboxController(OIConstants.XBOXPort);
 
         configureBindings();
     }
