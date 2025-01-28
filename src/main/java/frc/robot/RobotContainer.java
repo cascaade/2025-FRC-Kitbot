@@ -27,18 +27,12 @@ public class RobotContainer {
     }
 
     private void configureBindings() {
-        drivetrain.setDefaultCommand(drivetrain.drive(controller::getLeftX, controller::getLeftY));
+        drivetrain.setDefaultCommand(drivetrain.drive(controller::getLeftY, controller::getRightY));
 
         controller.x().onTrue(shooter.start());
         controller.x().onFalse(shooter.stop());
         controller.y().onTrue(shooter.astart());
         controller.y().onFalse(shooter.stop());
-
-        // controller.rightTrigger().onTrue(drivetrain.DriveRight(DriveTrainConstants.driveSpeed)); 
-        // controller.rightTrigger().onFalse(drivetrain.DriveRight(0)); 
-
-        // controller.leftTrigger().onTrue(drivetrain.DriveLeft(DriveTrainConstants.driveSpeed)); 
-        // controller.leftTrigger().onFalse(drivetrain.DriveLeft(0));
     }
 
     public Command getAutonomousCommand() {

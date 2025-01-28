@@ -11,10 +11,10 @@ public final class Constants {
     }
 
     public final class DriveConstants {
-        public static int leftMainCAN = 3;
-        public static int leftFollowCAN = 1;
-        public static int rightMainCAN = 4;
-        public static int rigthFollowCAN = 2;
+        public static int leftMainCAN = 4;
+        public static int leftFollowCAN = 2;
+        public static int rightMainCAN = 3;
+        public static int rigthFollowCAN = 1;
 
         public static double driveSpeed = -5.0;
 
