@@ -8,9 +8,11 @@ import com.ctre.phoenix.motorcontrol.InvertType;
 import com.ctre.phoenix.motorcontrol.can.WPI_TalonSRX;
 import com.ctre.phoenix.motorcontrol.can.WPI_VictorSPX;
 
+import edu.wpi.first.wpilibj.GenericHID.RumbleType;
 import edu.wpi.first.wpilibj.smartdashboard.SmartDashboard;
 import edu.wpi.first.wpilibj2.command.Command;
 import edu.wpi.first.wpilibj2.command.SubsystemBase;
+import edu.wpi.first.wpilibj2.command.button.CommandXboxController;
 
 public class DriveTrain extends SubsystemBase {
     private WPI_TalonSRX leftMain = new WPI_TalonSRX(DriveConstants.leftMainCAN);
@@ -31,51 +33,40 @@ public class DriveTrain extends SubsystemBase {
         leftMain.setInverted(false);
         rightMain.setInverted(true);
 
-        leftFollow.setInverted(InvertType.FollowMaster); //! Make sure this doesn't step the motors
+        leftFollow.setInverted(InvertType.FollowMaster);
         rightFollow.setInverted(InvertType.FollowMaster);
     }
 
-    // public Command drive(DoubleSupplier xSupplier, DoubleSupplier ySupplier) {
-    //     return run(() -> {
-    //         double axisX = xSupplier.getAsDouble(); // Determines the DIFFERENCE in velocity between wheelsets
-    //         double axisY = ySupplier.getAsDouble(); // Determines the speed of the robot (both wheelsets)
+    public Command arcade_drive(DoubleSupplier xSupplier, DoubleSupplier ySupplier, CommandXboxController controller) {
+        return run(() -> {
+            // uses arcade drive to drive the robot
 
-    //         // Account for stick drift in controllers
-    //         if (axisY > -0.05 && axisY < 0.05) axisY = 0;
+            double rotate = xSupplier.getAsDouble();
+            double drive = ySupplier.getAsDouble();
 
-    //         double leftSpeed = 0;
-    //         double rightSpeed = 0;
+            double leftSpeed = DriveConstants.driveSpeed * (drive - rotate / 2);
+            double rightSpeed = DriveConstants.driveSpeed * (drive + rotate / 2) * 1.01;
 
-    //         double mainSpeed = DriveConstants.driveSpeed * axisY;
-    //         double difference = DriveConstants.turnSpeed * axisX;
+            leftMain.setVoltage(leftSpeed);
+            rightMain.setVoltage(rightSpeed);
 
-    //         // INNER -> Only the inner set of wheels change velocity
-    //         // OUTER -> Only the outer set of wheels change velocity
-    //         // MIDDLE -> Both sets of wheels change velocity
+            controller.setRumble(RumbleType.kLeftRumble, Math.abs(leftSpeed / 5));
+            controller.setRumble(RumbleType.kRightRumble, Math.abs(rightSpeed / 5));
 
-    //         // Adjusting for MIDDLE
-    //         leftSpeed = mainSpeed - difference / 2;
-    //         rightSpeed = mainSpeed + difference / 2;
+            SmartDashboard.putNumber("left-speed", leftSpeed);
+            SmartDashboard.putNumber("right-speed", rightSpeed);
+        });
+    }
 
-    //         // Set speeds
-    //         leftMain.setVoltage(leftSpeed);
-    //         rightMain.setVoltage(rightSpeed);
+    public Command tank_drive(DoubleSupplier leftSupplier, DoubleSupplier rightSupplier) {
+        // uses tank drive to drive the robot
 
-    //         // SmartDashboard
-    //         SmartDashboard.putNumber("x", axisX);
-    //         SmartDashboard.putNumber("y", axisY);
-    //         SmartDashboard.putNumber("leftSpeed", leftSpeed);
-    //         SmartDashboard.putNumber("rightSpeed", rightSpeed);
-    //     });
-    // }
-
-    public Command drive(DoubleSupplier leftSupplier, DoubleSupplier rightSupplier) {
         return run(() -> {
             double leftAxis = leftSupplier.getAsDouble();
             double rightAxis = rightSupplier.getAsDouble();
 
             double leftSpeed = leftAxis * DriveConstants.driveSpeed;
-            double rightSpeed = rightAxis * DriveConstants.driveSpeed * 1.2;
+            double rightSpeed = rightAxis * DriveConstants.driveSpeed * 1.01;
 
             leftMain.setVoltage(leftSpeed);
             rightMain.setVoltage(rightSpeed);

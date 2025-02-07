@@ -20,4 +20,14 @@ public final class Constants {
 
         public static double turnSpeed = 1.0;
     }
+
+    public final class AlgaeConstants {
+        public static int kWristMotorCanId = 6;
+        public static int kIndexMotorCanId = 7;
+
+        public static double kIndexMotorSpeed = 4.0;
+        public static double kP = 0;
+        public static double kI = 0;
+        public static double kD = 0;
+    }
 }

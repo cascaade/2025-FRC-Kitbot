@@ -8,21 +8,40 @@ import frc.robot.Constants.ShooterConstants;
 
 public class Shooter extends SubsystemBase {
     private WPI_TalonSRX motor; 
+
+    private boolean shootOut = false;
+    private boolean shootIn = false;
     
     public Shooter() {
         motor = new WPI_TalonSRX(ShooterConstants.shooterCAN); 
     }
 
     public void ShootCoral() {
-        motor.setVoltage(-ShooterConstants.shooterSpeed); 
+        if (!shootIn) {
+            motor.setVoltage(-ShooterConstants.shooterSpeed);
+            shootOut = true;
+        } else {
+            motor.setVoltage(0);
+            shootOut = false;
+            shootIn = false;
+        }
     }
 
     public void unShootCoral() {
-        motor.setVoltage(ShooterConstants.shooterSpeed); 
+        if (!shootOut) {
+            motor.setVoltage(ShooterConstants.shooterSpeed); 
+            shootIn = true;
+        } else {
+            motor.setVoltage(0);
+            shootOut = false;
+            shootIn = false;
+        }
     }
 
     public void StopShooter() {
         motor.setVoltage(0);
+        shootOut = false;
+        shootIn = false;
     }
 
     public Command start() {
