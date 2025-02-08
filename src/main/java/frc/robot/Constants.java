@@ -22,12 +22,17 @@ public final class Constants {
     }
 
     public final class AlgaeConstants {
+        public static int kWristEncoderDIOport = 9;
+
         public static int kWristMotorCanId = 6;
         public static int kIndexMotorCanId = 7;
 
         public static double kIndexMotorSpeed = 4.0;
-        public static double kP = 0;
+
+        public static double kP = 20;
         public static double kI = 0;
         public static double kD = 0;
+
+        public static double kG = 5;
     }
 }

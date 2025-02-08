@@ -1,8 +1,8 @@
 package frc.robot.subsystems.algae;
 
 public enum AlgaePosition {
-    UP("UP", 70),
-    OUT("OUT", 0);
+    HOME("HOME", 0.65),
+    INTAKE("INTAKE", 0.5);
 
     public final String name;
     public final double angle;

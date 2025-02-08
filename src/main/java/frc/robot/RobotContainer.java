@@ -39,8 +39,11 @@ public class RobotContainer {
 
         controller.a().onTrue(algae.takeIn());
         controller.a().onFalse(algae.stop());
+        controller.b().onTrue(algae.release());
+        controller.b().onFalse(algae.stop());
 
-        // controller.b().onTrue(algaein.);
+        controller.leftBumper().onTrue(algae.goPosition());
+        controller.leftBumper().onFalse(algae.stopPosition());
     }
 
     public Command getAutonomousCommand() {
