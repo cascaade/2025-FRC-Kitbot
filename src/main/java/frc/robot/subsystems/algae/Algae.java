@@ -6,6 +6,7 @@ import com.ctre.phoenix.motorcontrol.can.WPI_VictorSPX;
 import edu.wpi.first.math.MathUtil;
 import edu.wpi.first.math.controller.ArmFeedforward;
 import edu.wpi.first.math.controller.PIDController;
+import edu.wpi.first.math.geometry.Rotation2d;
 import edu.wpi.first.wpilibj.DutyCycleEncoder;
 import edu.wpi.first.wpilibj.Preferences;
 import edu.wpi.first.wpilibj.smartdashboard.SmartDashboard;
@@ -42,6 +43,11 @@ public class Algae extends SubsystemBase {
         pid.setSetpoint(AlgaePosition.HOME.angle);
     }
 
+    @SuppressWarnings("static-access")
+    public Rotation2d getEncoderPositionInRotations() {
+        return new Rotation2d().fromRotations(encoder.get() - AlgaeConstants.armZero);
+    }
+
     public Command takeIn() {
         return runOnce(() -> {
             indexMotor.setVoltage(-AlgaeConstants.kIndexMotorSpeed);
@@ -56,7 +62,6 @@ public class Algae extends SubsystemBase {
 
     public Command angle(AlgaePosition setpoint) {
         return runOnce(() -> {
-            SmartDashboard.putNumber("setpoint", setpoint.angle);
             System.out.println(setpoint.name);
             pid.setSetpoint(setpoint.angle);
         });
@@ -83,19 +88,22 @@ public class Algae extends SubsystemBase {
 
     @Override
     public void periodic() {
+        double encoderPos = getEncoderPositionInRotations().getRadians();
+
+        SmartDashboard.putBoolean("encoder-connected", encoder.isConnected());
+        SmartDashboard.putNumber("encoder-position", encoderPos);
+        
         if (!bumperOn) return;
-
-        double encoderPos = encoder.get();
-
+        
         double outputVoltage = MathUtil.clamp(
             pid.calculate(encoderPos) + feedforward.calculate(pid.getSetpoint(), 0),
-            -2, 3
+            -3, 5
         );
+
+        SmartDashboard.putNumber("setpoint", pid.getSetpoint());
 
         wristMotor.setVoltage(outputVoltage);
 
-        SmartDashboard.putNumber("encoder-position", encoder.get());
-        SmartDashboard.putBoolean("encoder-connected", encoder.isConnected());
         SmartDashboard.putNumber("arm-voltage", outputVoltage);
     }
 }

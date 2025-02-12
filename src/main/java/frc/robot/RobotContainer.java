@@ -11,6 +11,7 @@ import frc.robot.Constants.OIConstants;
 import frc.robot.subsystems.DriveTrain;
 import frc.robot.subsystems.Shooter;
 import frc.robot.subsystems.algae.Algae;
+import frc.robot.subsystems.algae.AlgaePosition;
 
 public class RobotContainer {
     public final Shooter shooter;
@@ -44,6 +45,10 @@ public class RobotContainer {
 
         controller.leftBumper().onTrue(algae.goPosition());
         controller.leftBumper().onFalse(algae.stopPosition());
+
+        controller.povUp().onTrue(algae.angle(AlgaePosition.HOME));
+        controller.povRight().onTrue(algae.angle(AlgaePosition.INTAKE));
+        controller.povLeft().onTrue(algae.angle(AlgaePosition.CARRY));
     }
 
     public Command getAutonomousCommand() {

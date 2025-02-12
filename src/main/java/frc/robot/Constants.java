@@ -29,10 +29,12 @@ public final class Constants {
 
         public static double kIndexMotorSpeed = 4.0;
 
-        public static double kP = 20;
-        public static double kI = 0;
-        public static double kD = 0;
+        public static double kP = 18;
+        public static double kI = 1;
+        public static double kD = 1;
 
         public static double kG = 5;
+
+        public static final double armZero = 0.46;
     }
 }
