@@ -12,11 +12,13 @@ import frc.robot.subsystems.DriveTrain;
 import frc.robot.subsystems.Shooter;
 import frc.robot.subsystems.algae.Algae;
 import frc.robot.subsystems.algae.AlgaePosition;
+import frc.robot.subsystems.lights.Lights;
 
 public class RobotContainer {
     public final Shooter shooter;
     public final DriveTrain drivetrain;
     public final Algae algae;
+    public final Lights lights;
 
     private final CommandXboxController controller;  
 
@@ -24,6 +26,7 @@ public class RobotContainer {
         shooter = new Shooter();
         drivetrain = new DriveTrain();
         algae = new Algae();
+        lights = new Lights();
 
         controller = new CommandXboxController(OIConstants.XBOXPort);
 
@@ -31,24 +34,26 @@ public class RobotContainer {
     }
 
     private void configureBindings() {
-        drivetrain.setDefaultCommand(drivetrain.arcade_drive(controller::getRightX, controller::getRightY, controller));
+        // drivetrain.setDefaultCommand(drivetrain.arcade_drive(controller::getRightX, controller::getRightY, controller));
 
-        controller.x().onTrue(shooter.start());
-        controller.x().onFalse(shooter.stop());
-        controller.y().onTrue(shooter.astart());
-        controller.y().onFalse(shooter.stop());
+        // controller.x().onTrue(shooter.start());
+        // controller.x().onFalse(shooter.stop());
+        // controller.y().onTrue(shooter.astart());
+        // controller.y().onFalse(shooter.stop());
 
-        controller.a().onTrue(algae.takeIn());
-        controller.a().onFalse(algae.stop());
-        controller.b().onTrue(algae.release());
-        controller.b().onFalse(algae.stop());
+        // controller.a().onTrue(algae.takeIn());
+        // controller.a().onFalse(algae.stop());
+        // controller.b().onTrue(algae.release());
+        // controller.b().onFalse(algae.stop());
 
-        controller.leftBumper().onTrue(algae.goPosition());
-        controller.leftBumper().onFalse(algae.stopPosition());
+        controller.povUp().onTrue(lights.setLights());
 
-        controller.povUp().onTrue(algae.angle(AlgaePosition.HOME));
-        controller.povRight().onTrue(algae.angle(AlgaePosition.INTAKE));
-        controller.povLeft().onTrue(algae.angle(AlgaePosition.CARRY));
+        // controller.leftBumper().onTrue(algae.goPosition());
+        // controller.leftBumper().onFalse(algae.stopPosition());
+
+        // controller.povUp().onTrue(algae.angle(AlgaePosition.HOME));
+        // controller.povRight().onTrue(algae.angle(AlgaePosition.INTAKE));
+        // controller.povLeft().onTrue(algae.angle(AlgaePosition.CARRY));
     }
 
     public Command getAutonomousCommand() {

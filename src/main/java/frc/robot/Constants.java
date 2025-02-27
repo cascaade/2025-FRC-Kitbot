@@ -21,6 +21,10 @@ public final class Constants {
         public static double turnSpeed = 1.0;
     }
 
+    public final class LEDConstants {
+        public static int port = 8;
+    }
+
     public final class AlgaeConstants {
         public static int kWristEncoderDIOport = 9;
 
